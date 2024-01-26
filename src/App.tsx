@@ -1,3 +1,4 @@
+import CharacterCard from "./components/CharacterCard/CharacterCard";
 import InfiniteScroll from "./components/InfiniteScroll/InfiniteScroll";
 import useGetRickAndMorty from "./hooks/useGetRickAndMorty";
 
@@ -14,11 +15,7 @@ function App() {
       data={characters}
       loading={loading}
       render={(items) =>
-        items.map((item) => (
-          <article key={item.id}>
-            #{item.id}: {item.name}
-          </article>
-        ))
+        items.map((item, index) => <CharacterCard key={item.id} name={item.name} index={index} imageUrl={item.image} />)
       }
     >
       {/* In case this needs to be a component, the ref must be passed using forwardRef */}

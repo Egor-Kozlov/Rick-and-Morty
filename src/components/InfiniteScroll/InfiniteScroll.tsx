@@ -1,5 +1,5 @@
+import { Grid } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-
 type InfiniteScrollProps = {
   countOfItems: number;
   countOfPages: number;
@@ -45,7 +45,10 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
 
   return (
     <React.Fragment>
-      {data && render(data)}
+      <Grid w={"100%"} templateRows="repeat(5, 1fr)" templateColumns="repeat(2, 1fr)" gap={4}>
+        {data && render(data)}
+      </Grid>
+
       {!isLastPage && childWithRef}
     </React.Fragment>
   );
