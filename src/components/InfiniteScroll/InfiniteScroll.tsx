@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 type InfiniteScrollProps = {
   countOfItems: number;
@@ -44,13 +44,12 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   }, [data, isLastPage]);
 
   return (
-    <React.Fragment>
-      <Grid w={"100%"} templateRows="repeat(5, 1fr)" templateColumns="repeat(2, 1fr)" gap={4}>
+    <Box display={"flex"} alignItems={"center"} flexDirection={"column"} paddingY={40}>
+      <SimpleGrid maxW={"1336px"} columns={2} spacingX="40px" spacingY="20px">
         {data && render(data)}
-      </Grid>
-
-      {!isLastPage && childWithRef}
-    </React.Fragment>
+        {!isLastPage && childWithRef}
+      </SimpleGrid>
+    </Box>
   );
 };
 
