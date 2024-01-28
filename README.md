@@ -12,3 +12,8 @@ Support mobile version as well.
 - Chakra UI
 - Vite
 
+## Start commands:
+
+- yarn install
+- yarn dev
+
