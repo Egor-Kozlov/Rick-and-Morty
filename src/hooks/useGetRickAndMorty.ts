@@ -9,13 +9,11 @@ const useGetRickAndMorty = () => {
 
   const charactersRequest = useCallback(
     async (page: number = 1) => {
-      console.log("charactersRequest");
       try {
         setLoading(true);
         const response = await getCharacters({ page });
         if (response.status === 200 && response.data.results) {
-          // setCharacters([...characters, ...response.data.results]);
-          setCharacters(characters.concat(response.data.results));
+          setCharacters([...characters, ...response.data.results]);
           setCountOfCharacters(response.data.info?.count ?? 0);
           setCountOfPages(response.data.info?.pages ?? 0);
         } else {

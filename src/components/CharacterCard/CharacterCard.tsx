@@ -1,54 +1,71 @@
-import { Badge, Card, CardBody, HStack, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import { memo } from "react";
+import { Badge, Box, Card, HStack, Heading, Image, Text, VStack } from "@chakra-ui/react";
+import { memo, useState } from "react";
 import type { Character } from "rickmortyapi";
 
 type CharacterCardProps = {
   name: Character["name"];
   status: Character["status"];
   imageUrl: Character["image"];
-  index: number;
+  id: number;
   species: Character["species"];
   gender: Character["gender"];
+  isSkeleton?: boolean;
 };
 
-const CharacterCard: React.FC<CharacterCardProps> = ({ name, status, imageUrl, index, gender, species }) => {
+const CharacterCard: React.FC<CharacterCardProps> = ({ name, status, imageUrl, id, gender, species }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   return (
-    <Card maxW={"400px"} maxH={"200px"} direction={{ base: "column", sm: "row" }} overflow="hidden" variant="outline">
-      <Image objectFit="cover" src={imageUrl} alt="Caffe Latte" w={"100%"} h={"100%"} />
+    <Card w={"100%"} h={"150px"} direction={"row"} overflow="hidden" variant="outline">
+      <Box w={"140px"} h={"100%"}>
+        {/* <Fade in={isImageLoaded}> */}
+        <Image
+          onLoad={() => setIsImageLoaded(true)}
+          w={"140px"}
+          h={"150px"}
+          objectFit="cover"
+          src={imageUrl}
+          alt={`${name}'s avatar`}
+        />
+        {/* </Fade>
+        {!isImageLoaded && <Box w={"100%"} h={"100%"} bg={"gray.100"} position={"absolute"} zIndex={50} />} */}
+      </Box>
+      <VStack p={3} flexGrow={1}>
+        <HStack w={"100%"} borderRadius="md" justifyContent={"space-between"}>
+          <Text as="span" fontWeight="bold" fontSize={"xs"}>
+            #{id}
+          </Text>
+          <Badge colorScheme={status === "Alive" ? "green" : status === "Dead" ? "red" : "gray"}>{status}</Badge>
+        </HStack>
 
-      <Stack w={"100%"}>
-        <CardBody>
-          <HStack w={"auto"} justifyContent={"space-between"} alignItems={"center"}>
-            <Text as="span" fontWeight="bold">
-              #{index}
-            </Text>
-            <Badge colorScheme={status === "Alive" ? "green" : status === "Dead" ? "red" : "gray"}>{status}</Badge>
-          </HStack>
-
-          <Heading h={20} size="sm">
+        <VStack w={"100%"} h={"100%"} alignItems={"start"} justifyContent={"space-between"} gap={"5px"}>
+          <Heading minH={5} size="s">
             {name}
           </Heading>
-          <HStack>
-            <Text fontSize="sm">
-              <Text as="span" fontWeight="bold">
-                Species:
-              </Text>{" "}
-              {species}
-            </Text>
-          </HStack>
-          <HStack>
-            <Text fontSize="sm">
-              <Text as="span" fontWeight="bold">
-                Gender:
-              </Text>{" "}
-              {gender}
-            </Text>
-          </HStack>
-        </CardBody>
-      </Stack>
+
+          <VStack w={"100%"} alignItems={"flex-start"} gap={0}>
+            <HStack>
+              <Text fontSize="xs">
+                <Text as="span" fontWeight="bold">
+                  Species:
+                </Text>{" "}
+                {species}
+              </Text>
+            </HStack>
+            <HStack>
+              <Text fontSize="xs">
+                <Text as="span" fontWeight="bold">
+                  Gender:
+                </Text>{" "}
+                {gender}
+              </Text>
+            </HStack>
+          </VStack>
+        </VStack>
+      </VStack>
     </Card>
   );
 };
 
-//memo here isn't necessary in our case, when all cards are very lightweight
+// export default CharacterCard;
+
 export default memo(CharacterCard);
