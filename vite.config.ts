@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/Rick-and-Morty/",
   resolve: {
     alias: {
       "@app-hooks": path.resolve(__dirname, "./src/hooks"),
