@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import type { Character } from "rickmortyapi";
 
 type InfiniteScrollProps = {
-  render: (items: Character[]) => JSX.Element[];
-  children: JSX.Element;
+  render: (items: Character[]) => React.JSX.Element[];
+  children: React.JSX.Element;
   data: Character[] | [];
   loading: boolean;
   countOfPages: number;
@@ -17,8 +17,9 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ render, children, data,
   const isLastPage = countOfPages === page;
   const childWithRef = React.cloneElement(children, { ref: element });
 
+  //how much pixels from bottom of the page should be to add new items
   const options = {
-    rootMargin: "0px 0px 350px 0px",
+    rootMargin: "0px 0px 450px 0px",
     threshold: 0,
   };
 

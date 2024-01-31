@@ -1,7 +1,7 @@
 import ImagePlaceholder from "@app-assets/images/person-placeholder.jpg";
 import getStatusColor from "@app-utils/getStatusColor";
 import { Badge, Box, Card, HStack, Heading, Image, Text, VStack } from "@chakra-ui/react";
-import { memo, useState } from "react";
+import React, { memo, useState } from "react";
 import type { Character } from "rickmortyapi";
 
 type CharacterCardProps = {
