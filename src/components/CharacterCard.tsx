@@ -1,16 +1,34 @@
 import ImagePlaceholder from "@app-assets/images/person-placeholder.jpg";
-import getStatusColor from "@app-utils/getStatusColor";
 import { Badge, Box, Card, HStack, Heading, Image, Text, VStack } from "@chakra-ui/react";
-import React, { memo, useState } from "react";
+import { FC, memo } from "react";
 import type { Character } from "rickmortyapi";
 
 type CharacterCardProps = {
-  character: Character;
+  character?: Character;
+  isEmptyCard?: boolean;
 };
 
-const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
-  const { image, name, id, status, species, gender } = character;
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+const getStatusColor = (character: Character) => {
+  switch (character.status) {
+    case "Alive":
+      return "green";
+    case "Dead":
+      return "red";
+    default:
+      return "gray";
+  }
+};
+
+const CharacterCard: FC<CharacterCardProps> = ({ character, isEmptyCard }) => {
+  if (isEmptyCard) {
+    return (
+      <Card w={"340px"} h={"150px"} direction={"row"} overflow="hidden" variant="outline">
+        <Box w={"100%"} h={"100%"} bg={"gray.100"} position={"absolute"} zIndex={50} top={0} />
+      </Card>
+    );
+  }
+
+  const { image, name, id, status, species, gender } = character as Character;
 
   const CardHeader = () => {
     return (
@@ -18,7 +36,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
         <Text as="span" fontWeight="bold" fontSize={"xs"}>
           #{id || "Unknown"}
         </Text>
-        <Badge colorScheme={getStatusColor(character)}>{status}</Badge>
+        <Badge colorScheme={character && getStatusColor(character)}>{status}</Badge>
       </HStack>
     );
   };
@@ -47,15 +65,8 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
   };
 
   return (
-    <Card w={"100%"} h={"150px"} direction={"row"} overflow="hidden" variant="outline">
-      <Image
-        onLoad={() => setIsImageLoaded(true)}
-        w={"140px"}
-        h={"150px"}
-        objectFit="cover"
-        src={image || ImagePlaceholder}
-        alt={`${name}'s avatar`}
-      />
+    <Card w={"340px"} h={"150px"} direction={"row"} overflow="hidden" variant="outline">
+      <Image w={"140px"} h={"150px"} objectFit="cover" src={image || ImagePlaceholder} alt={`${name}'s avatar`} />
       <VStack p={3} gap={0} flex={1}>
         <CardHeader />
         <VStack w={"100%"} h={"100%"} alignItems={"start"} justifyContent={"space-between"} gap={"5px"}>
@@ -65,7 +76,6 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
           <CardBody />
         </VStack>
       </VStack>
-      {!isImageLoaded && <Box w={"100%"} h={"100%"} bg={"gray.100"} position={"absolute"} zIndex={50} top={0} />}
     </Card>
   );
 };

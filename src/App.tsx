@@ -1,8 +1,7 @@
-import CharacterCard from "@app-components/CharacterCard";
 import InfiniteScroll from "@app-components/InfiniteScroll";
 import SmthWentWrong from "@app-components/SmthWentWrong";
-import useGetRickAndMorty from "@app-hooks/useGetRickAndMorty";
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { useState } from "react";
 
 // to reset scroll position on page reload
 window.onbeforeunload = function () {
@@ -10,26 +9,9 @@ window.onbeforeunload = function () {
 };
 
 function App() {
-  const { characters, loading, countOfPages, error, charactersRequest } = useGetRickAndMorty();
+  const [error, setError] = useState(false);
 
-  return (
-    <ChakraProvider>
-      {error ? (
-        <SmthWentWrong />
-      ) : (
-        <InfiniteScroll
-          getItems={charactersRequest}
-          countOfPages={countOfPages}
-          data={characters}
-          loading={loading}
-          render={(characters) => characters.map((character) => <CharacterCard key={character.id} character={character} />)}
-        >
-          {/* it's observable component, which can be anything. This was has better performance, than subscribe to the card in list every time */}
-          <Box opacity={0} />
-        </InfiniteScroll>
-      )}
-    </ChakraProvider>
-  );
+  return <ChakraProvider>{error ? <SmthWentWrong /> : <InfiniteScroll setError={setError} />}</ChakraProvider>;
 }
 
 export default App;
